@@ -28,6 +28,13 @@ module.exports = app => {
 
   // error handlers
   app.use((err, req, res, next) => {
+    // if (err.name === 'UnauthorizedError') {
+    //   return res
+    //     .status(err.status)
+    //     .send({ message: err.message })
+    //     .end();
+    // }
+
     if (err.name === 'ValidationError') {
       return res.status(err.status || 422).json({
         errors: err.details

@@ -1,4 +1,4 @@
-// const Joi = require('@hapi/joi');
+const Joi = require('@hapi/joi');
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
@@ -71,26 +71,22 @@ UserSchema.methods.toAuthJSON = function() {
   };
 };
 
-mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
-// const validateLogin = user => {
-//   const schema = Joi.object({
-//     username: Joi.string()
-//       .pattern(new RegExp(/^[a-zA-Z0-9]+$/))
-//       .lowercase()
-//       .min(5)
-//       .max(50)
-//       .required(),
-//     email: Joi.string()
-//       .pattern(new RegExp(/\S+@\S+\.\S+/))
-//       .lowercase()
-//       .required(),
-//     bio: Joi.string(),
-//     image: Joi.string(),
-//   });
+const validateLogin = user => {
+  const schema = Joi.object({
+    email: Joi.string()
+      .pattern(new RegExp(/\S+@\S+\.\S+/))
+      .lowercase()
+      .required(),
+    password: Joi.string()
+      .min(6)
+      .max(50)
+      .required(),
+  });
 
-//   return schema.validate(user, { abortEarly: false });
-// };
+  return schema.validate(user, { abortEarly: false });
+};
 
-// exports.User = User;
-// exports.validateLogin = validateLogin;
+exports.User = User;
+exports.validateLogin = validateLogin;
