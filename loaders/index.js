@@ -9,6 +9,9 @@ module.exports = async app => {
   // Load Models
   require('../models/User');
 
+  // Load passport Middleware
+  require('../config/passport');
+
   await expressLoader(app);
   Logger.info('Express loaded');
 };
