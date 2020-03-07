@@ -28,6 +28,28 @@ module.exports = app => {
 
   // error handlers
   app.use((err, req, res, next) => {
+    if (err.name === 'ValidationError') {
+      return res.status(err.status || 422).json({
+        errors: err.details
+          ? // Joi error handling
+            err.details.reduce((errors, error) => {
+              errors[error.path[0]] = error.message;
+
+              return errors;
+            }, {})
+          : // Mongoose error handling
+            Object.keys(err.errors).reduce(function(errors, key) {
+              errors[key] = err.errors[key].message;
+
+              return errors;
+            }, {}),
+      });
+    }
+
+    return next(err);
+  });
+
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
       errors: {
