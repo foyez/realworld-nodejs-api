@@ -3,15 +3,20 @@ const mongooseLoader = require('./mongoose');
 const Logger = require('./logger');
 
 module.exports = async app => {
-  await mongooseLoader();
-  Logger.info('DB loaded and connected!');
+  try {
+    await mongooseLoader();
+    Logger.info('DB loaded and connected!');
 
-  // Load Models
-  require('../models/User');
+    // Load Models
+    require('../models/User');
+    require('../models/Article');
 
-  // Load passport Middleware
-  require('../config/passport');
+    // Load passport Middleware
+    require('../config/passport');
 
-  await expressLoader(app);
-  Logger.info('Express loaded');
+    await expressLoader(app);
+    Logger.info('Express loaded');
+  } catch (err) {
+    Logger.error(err.message);
+  }
 };
