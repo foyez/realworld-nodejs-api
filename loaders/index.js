@@ -10,6 +10,7 @@ module.exports = async app => {
     // Load Models
     require('../models/User');
     require('../models/Article');
+    require('../models/Comment');
 
     // Load passport Middleware
     require('../config/passport');

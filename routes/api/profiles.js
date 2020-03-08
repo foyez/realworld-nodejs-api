@@ -37,4 +37,38 @@ router.get('/:username', auth.optional, (req, res, next) => {
   }
 });
 
+// FOLLOW A PROFILE
+router.post('/:username/follow', auth.required, async (req, res, next) => {
+  const profileId = req.profile._id;
+
+  try {
+    const user = await User.findById(req.payload.id);
+
+    if (!user) return res.sendStatus(401);
+
+    await user.follow(profileId);
+
+    return res.json({ profile: req.profile.toProfileJSONFor(user) });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// UNFOLLOW A PROFILE
+router.delete('/:username/follow', auth.required, async (req, res, next) => {
+  const profileId = req.profile._id;
+
+  try {
+    const user = await User.findById(req.payload.id);
+
+    if (!user) return res.sendStatus(401);
+
+    await user.unfollow(profileId);
+
+    return res.json({ profile: req.profile.toProfileJSONFor(user) });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
