@@ -98,4 +98,40 @@ router.delete('/:article', auth.required, async (req, res, next) => {
   }
 });
 
+// FAVORITE AN ARTICLE
+router.post('/:article/favorite', auth.required, async (req, res, next) => {
+  const articleId = req.article._id;
+
+  try {
+    const user = await User.findById(req.payload.id);
+
+    if (!user) return res.sendStatus(401);
+
+    await user.favorite(articleId);
+    const article = await req.article.updateFavoritesCount();
+
+    return res.json({ article: article.toJSONFor(user) });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// UNFAVORITE AN ARTICLE
+router.delete('/:article/favorite', auth.required, async (req, res, next) => {
+  const articleId = req.article._id;
+
+  try {
+    const user = await User.findById(req.payload.id);
+
+    if (!user) return res.sendStatus(401);
+
+    await user.unfavorite(articleId);
+    const article = await req.article.updateFavoritesCount();
+
+    return res.json({ article: article.toJSONFor(user) });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
