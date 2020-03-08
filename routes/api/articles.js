@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const passport = require('passport');
 const mongoose = require('mongoose');
 const Article = mongoose.model('Article');
 const User = mongoose.model('User');
@@ -31,6 +30,76 @@ router.param('comment', async (req, res, next, id) => {
     req.comment = comment;
 
     return next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET ARTICLES
+router.get('/', auth.optional, async (req, res, next) => {
+  const { author: qryAuthor, limit, offset, tag, favorited } = req.query;
+  const LIMIT = parseInt(limit) || 20;
+  const OFFSET = parseInt(offset) || 0;
+  const query = {};
+
+  try {
+    let results = await Promise.all([
+      qryAuthor ? User.findOne({ username: qryAuthor }) : null,
+      favorited ? User.findOne({ username: favorited }) : null,
+    ]);
+    const [author, favoriter] = results;
+
+    if (typeof tag !== 'undefined') query.tagList = { $in: [tag] };
+    if (author) query.author = author._id;
+    if (favoriter) query._id = { $in: favoriter.favorites };
+    else if (favorited) query._id = { $in: [] };
+
+    results = await Promise.all([
+      Article.find(query)
+        .limit(LIMIT)
+        .skip(OFFSET)
+        .sort({ createdAt: 'desc' })
+        .populate('author')
+        .exec(),
+      Article.countDocuments(query).exec(),
+      req.payload ? User.findById(req.payload.id) : null,
+    ]);
+    const [articles, articlesCount, user] = results;
+
+    return res.json({
+      articles: articles.map(article => article.toJSONFor(user)),
+      articlesCount,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET FEED
+router.get('/feed', auth.required, async (req, res, next) => {
+  const { limit, offset } = req.query;
+  const LIMIT = parseInt(limit) || 20;
+  const OFFSET = parseInt(offset) || 0;
+
+  try {
+    const user = await User.findById(req.payload.id);
+
+    if (!user) return res.sendStatus(401);
+
+    const results = await Promise.all([
+      Article.find({ author: { $in: user.following } })
+        .limit(LIMIT)
+        .skip(OFFSET)
+        .populate('author')
+        .exec(),
+      Article.countDocuments({ author: { $in: user.following } }),
+    ]);
+    const [articles, articlesCount] = results;
+
+    return res.json({
+      articles: articles.map(article => article.toJSONFor(user)),
+      articlesCount,
+    });
   } catch (err) {
     next(err);
   }

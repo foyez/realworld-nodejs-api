@@ -57,11 +57,14 @@ module.exports = app => {
   });
 
   app.use((err, req, res, next) => {
+    const errors = { message: err.message };
+
+    if (require('../config').nodeEnv === 'development') {
+      console.log(err.stack);
+      errors.error = err;
+    }
+
     res.status(err.status || 500);
-    res.json({
-      errors: {
-        message: err.message,
-      },
-    });
+    res.json({ errors });
   });
 };
