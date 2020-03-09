@@ -23,11 +23,14 @@ const ArticleSchema = new mongoose.Schema(
 ArticleSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
 ArticleSchema.pre('validate', function() {
-  this.slugify();
+  if (!this.slug) {
+    this.slugify();
+  }
 });
 
 ArticleSchema.methods.slugify = function() {
-  this.slug = slug(this.title);
+  // this.slug = slug(this.title);
+  this.slug = slug(this.title) + '-' + ((Math.random() * Math.pow(36, 6)) | 0).toString(36);
 };
 
 ArticleSchema.methods.updateFavoritesCount = async function() {

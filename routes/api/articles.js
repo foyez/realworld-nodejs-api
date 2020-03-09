@@ -148,11 +148,12 @@ router.put('/:article', auth.required, async (req, res, next) => {
     if (!user) return res.sendStatus(401);
 
     if (req.article.author._id.toString() === req.payload.id.toString()) {
-      const { title, description, body } = req.body.article;
+      const { title, description, body, tagList } = req.body.article;
 
       if (typeof title !== 'undefined') req.article.title = title;
       if (typeof description !== 'undefined') req.article.description = description;
       if (typeof body !== 'undefined') req.article.body = body;
+      if (typeof tagList !== 'undefined') req.article.tagList = tagList;
 
       const article = await req.article.save();
 

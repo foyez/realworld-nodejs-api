@@ -4,7 +4,7 @@ const User = mongoose.model('User');
 const passport = require('passport');
 const auth = require('../middleware/auth');
 
-// Preload article objects on routes with ':username'
+// Preload user profile on routes with ':username'
 router.param('username', async (req, res, next, username) => {
   try {
     const user = await User.findOne({ username });

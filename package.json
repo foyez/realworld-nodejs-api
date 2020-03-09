@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --forceExit --detectOpenHandles --maxWorkers=1 --verbose"
   },
   "repository": {
     "type": "git",
@@ -26,15 +26,12 @@
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
-    "methods": "^1.1.2",
     "mongoose": "^5.9.3",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "request": "^2.88.2",
     "slug": "^2.1.1",
-    "underscore": "^1.9.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {

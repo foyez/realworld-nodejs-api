@@ -37,6 +37,11 @@ module.exports = {
   },
 
   get mongodbUri() {
+    if (this.nodeEnv === 'test') {
+      console.log(this.nodeEnv);
+      return process.env.TEST_DB_URI;
+    }
+
     return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
   },
 
