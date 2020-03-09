@@ -4,7 +4,7 @@ const Logger = require('./logger');
 
 module.exports = async app => {
   try {
-    const dbConnection = await mongooseLoader();
+    const dbConnection = await mongooseLoader.connect();
     Logger.info(`DB loaded and connected to: ${dbConnection.connections[0].name}`);
 
     // Load Models

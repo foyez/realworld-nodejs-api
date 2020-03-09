@@ -1,28 +1,78 @@
-const request = require('supertest');
-const mongoose = require('mongoose');
+const dbHandler = require('../../../../loaders/mongoose');
 const { User } = require('../../../../models/User');
 
-let server;
+const supertest = require('supertest');
+const app = require('../../../../app');
+const request = supertest.agent(app);
 
-describe('tags endpoints', () => {
-  let id;
-  let user;
+describe('/api/profiles', () => {
+  /**
+   * Connect to a new in-memory database before running any tests.
+   */
+  // beforeAll(async () => await dbHandler.connect());
 
-  beforeEach(() => {
-    server = require('../../../../app');
-  });
+  /**
+   * Clear all test data after every test.
+   */
   afterEach(async () => {
-    await User.deleteMany();
-    await server.close();
+    // await app.close();
+    await dbHandler.clearDatabase();
   });
 
-  it('should return a list of tags', async () => {
-    const user = new User({ username: 'foyez', email: 'foyez@email.com', password: 'testpass' });
-    await user.save();
+  /**
+   * Remove and close the db and server.
+   */
+  afterAll(async () => {
+    await app.close();
+    await dbHandler.closeDatabase();
+  });
 
-    const res = await request(server).get('/api/profiles/foyez');
+  describe('GET /:username', () => {
+    let users;
+    let username;
+    let token;
 
-    expect(res.status).toBe(200);
-    // expect(res.body).toHaveProperty('test');
+    const exec = () => request.get(`/api/profiles/${username}`);
+
+    beforeEach(async () => {
+      users = [
+        {
+          username: 'foyez',
+          email: 'foyez@email.com',
+          password: 'testpass',
+        },
+        { username: 'rumon', email: 'rumon@email.com', password: 'testpass' },
+      ];
+      // const newUser = new User(user);
+      const newUsers = await User.collection.insertMany(users);
+      // await newUser.save();
+
+      token = new User().generateJWT();
+    });
+
+    it('should return 404 if username is invalid', async () => {
+      username = 'aaaaa';
+
+      const res = await exec();
+
+      expect(res.status).toBe(404);
+    });
+
+    it('should return a list of tags', async () => {
+      username = users[0].username;
+      token = '';
+
+      const res = await exec();
+
+      expect(res.status).toBe(200);
+    });
+
+    it('should return a profile', async () => {
+      username = users[0].username;
+
+      const res = await exec();
+
+      expect(res.body.profile).toMatch({ username });
+    });
   });
 });

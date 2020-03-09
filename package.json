@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest --watchAll --forceExit --detectOpenHandles --maxWorkers=1 --verbose"
+    "test": "jest --watchAll --runInBand --forceExit --detectOpenHandles --coverage"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "jest": "^25.1.0",
+    "mongodb-memory-server": "^6.3.2",
     "supertest": "^4.0.2"
   }
 }
