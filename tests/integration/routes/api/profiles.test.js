@@ -72,7 +72,7 @@ describe('/api/profiles', () => {
 
       const res = await exec();
 
-      expect(res.body.profile).toMatch({ username });
+      expect(res.body.profile).toMatchObject({ username });
     });
   });
 });

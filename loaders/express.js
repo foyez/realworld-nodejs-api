@@ -1,7 +1,9 @@
 const bodyParser = require('body-parser'),
   cors = require('cors'),
   errorhandler = require('errorhandler'),
-  session = require('express-session');
+  session = require('express-session'),
+  helmet = require('helmet'),
+  compression = require('compression');
 
 module.exports = app => {
   app.use(cors());
@@ -9,6 +11,8 @@ module.exports = app => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(require('method-override')());
+  app.use(helmet());
+  app.use(compression());
 
   app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
