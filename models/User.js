@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const secretOrKey = require('../config').secretOrKey;
+const config = require('../config');
+const moment = require('moment');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -48,17 +49,44 @@ UserSchema.methods.validPassword = function(password) {
   return this.hash === hash;
 };
 
+// UserSchema.methods.generateJWT = function() {
+//   const today = new Date();
+//   const exp = new Date(today);
+//   exp.setDate(today.getDate() + 60);
+//   const payload = {
+//     id: this._id,
+//     username: this.username,
+//     exp: parseInt(exp.getTime() / 1000),
+//   };
+
+//   return jwt.sign(payload, secretOrKey);
+// };
+
 UserSchema.methods.generateJWT = function() {
+  const today = moment().toDate();
+  const exp = moment(today)
+    .add(20, 'seconds')
+    .toDate();
+  const payload = {
+    id: this._id,
+    username: this.username,
+    exp: parseInt(exp.valueOf() / 1000),
+  };
+
+  return jwt.sign(payload, config.secretOrKey);
+};
+
+UserSchema.methods.generateRefreshToken = function() {
   const today = new Date();
   const exp = new Date(today);
   exp.setDate(today.getDate() + 60);
   const payload = {
     id: this._id,
     username: this.username,
-    exp: parseInt(exp.getTime() / 1000),
+    // exp: parseInt(exp.getTime() / 1000),
   };
 
-  return jwt.sign(payload, secretOrKey);
+  return jwt.sign(payload, config.refreshTokenSecret);
 };
 
 UserSchema.methods.toAuthJSON = function() {
@@ -66,6 +94,7 @@ UserSchema.methods.toAuthJSON = function() {
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
+    refreshToken: this.generateRefreshToken(),
     bio: this.bio,
     image: this.image,
   };

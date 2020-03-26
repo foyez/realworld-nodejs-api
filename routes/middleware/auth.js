@@ -2,11 +2,10 @@ const jwt = require('express-jwt'),
   secretOrKey = require('../../config').secretOrKey;
 
 const getTokenFromHeader = req => {
-  if (
-    (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') ||
-    (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token')
-  ) {
-    return req.headers.authorization.split(' ')[1];
+  const authHeader = req.headers.authorization;
+
+  if ((authHeader && authHeader.split(' ')[0] === 'Bearer') || (authHeader && authHeader.split(' ')[0] === 'Token')) {
+    return authHeader.split(' ')[1];
   }
 
   return null;

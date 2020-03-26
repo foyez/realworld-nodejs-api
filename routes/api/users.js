@@ -40,6 +40,26 @@ router.put('/user', auth.required, async (req, res, next) => {
 });
 
 // LOGIN
+// router.post('/users/login', (req, res, next) => {
+//   const { error } = validateLogin(req.body.user);
+//   if (error) return next(error);
+
+//   passport.authenticate('local', { session: false }, (err, user, info) => {
+//     if (err) return next(err);
+
+//     if (user) {
+//       user.token = user.generateJWT();
+
+//       return res.status(200).json({ user: user.toAuthJSON() });
+//     } else {
+//       return res.status(422).json(info);
+//     }
+//   })(req, res, next);
+// });
+
+const refreshTokens = {};
+
+// LOGIN
 router.post('/users/login', (req, res, next) => {
   const { error } = validateLogin(req.body.user);
   if (error) return next(error);
@@ -49,12 +69,39 @@ router.post('/users/login', (req, res, next) => {
 
     if (user) {
       user.token = user.generateJWT();
+      user.refreshToken = user.generateRefreshToken();
+      refreshTokens[user.refreshToken] = user.username;
 
       return res.status(200).json({ user: user.toAuthJSON() });
     } else {
       return res.status(422).json(info);
     }
   })(req, res, next);
+});
+
+// GENERATE ACCESS TOKEN WITH REFRESH TOKEN
+router.post('/token', (req, res, next) => {
+  const { username, refreshToken } = req.body;
+
+  if (refreshToken in refreshTokens && refreshTokens[refreshToken] === username) {
+    const user = new User();
+    const token = user.generateJWT();
+
+    res.json({ token });
+  } else {
+    res.send(401);
+  }
+});
+
+// DELETE REFRESH TOKEN
+router.delete('/token/reject', (req, res, next) => {
+  const { refreshToken } = req.body;
+
+  if (refreshToken in refreshTokens) {
+    delete refreshTokens[refreshToken];
+  }
+
+  res.send(204);
 });
 
 // REGISTER

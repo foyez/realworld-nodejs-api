@@ -18,6 +18,7 @@ module.exports = {
 
   // JWT SECRET
   secretOrKey: process.env.SECRET_OR_KEY,
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
 
   // Preferred port
   port: parseInt(process.env.PORT || 5000),
