@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  # BACKEND API
+  realworld-api:
+    container_name: realworld
+    # image: node:12.16.1-buster-slim
+    build: ./
+    command: npm run dev
+    working_dir: /usr/src/realwrold-api
+    environment:
+      POSTGRES_DB_URI: postgres://foyez:testpass@postgres:5432/realworld-api
+    links:
+      - postgres
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./:/usr/src/realwrold-api
+
+  # Postgres
+  postgres:
+    environment:
+      POSTGRES_USER: foyez
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: realworld-api
+      POSTGRES_HOST: postgres
+    image: postgres
+    ports:
+      - '5432:5432'

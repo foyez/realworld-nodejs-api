@@ -39,9 +39,11 @@ module.exports = {
   get mongodbUri() {
     if (this.nodeEnv === 'test') {
       return process.env.TEST_DB_URI;
+    } else if (this.nodeEnv === 'production') {
+      return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
     }
 
-    return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
+    return process.env.DEV_DB_URI;
   },
 
   checkEnvVariables: () => {
