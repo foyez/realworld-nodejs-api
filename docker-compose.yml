@@ -9,21 +9,35 @@ services:
     command: npm run dev
     working_dir: /usr/src/realwrold-api
     environment:
-      POSTGRES_DB_URI: postgres://foyez:testpass@postgres:5432/realworld-api
+      # POSTGRES_DB_URI: postgres://foyez:testpass@postgres:5432/realworld-api
+      MONGO_DB_URI: mongodb://foyez:testpass@mongo:27017/realworld-api
     links:
-      - postgres
+      # - postgres
+      - mongo
     ports:
       - '5000:5000'
     volumes:
       - ./:/usr/src/realwrold-api
 
   # Postgres
-  postgres:
+  # postgres:
+  #   environment:
+  #     POSTGRES_USER: foyez
+  #     POSTGRES_PASSWORD: testpass
+  #     POSTGRES_DB: realworld-api
+  #     POSTGRES_HOST: postgres
+  #   image: postgres
+  #   ports:
+  #     - '5432:5432'
+
+  mongo:
+    image: mongo:latest
     environment:
-      POSTGRES_USER: foyez
-      POSTGRES_PASSWORD: testpass
-      POSTGRES_DB: realworld-api
-      POSTGRES_HOST: postgres
-    image: postgres
+      MONGO_INITDB_ROOT_USERNAME: foyez
+      MONGO_INITDB_ROOT_PASSWORD: testpass
     ports:
-      - '5432:5432'
+      - '27017:27017'
+    volumes:
+      - mongodb_data_container:/data/db
+volumes:
+  mongodb_data_container:

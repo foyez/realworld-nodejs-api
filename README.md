@@ -16,8 +16,11 @@ Example: docker build -t realworldcontainer .
 
 > docker-compose build
 > docker-compose run realworld-api
-> docker-compose down // shutdown running docker-compose
+> docker-compose stop // shutdown db without delete all containers
+> docker-compose down // shutdown db & delete all containers
 > docker-compose up --build // run & build docker
+> docker-compose up --build --remove-orphans
+
 > docker-compose up // run docker
 > docker-compose up -d
 > docker-compose exec realworld-api bash

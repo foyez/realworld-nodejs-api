@@ -43,7 +43,7 @@ module.exports = {
       return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
     }
 
-    return process.env.DEV_DB_URI;
+    return process.env.MONGO_DB_URI;
   },
 
   checkEnvVariables: () => {

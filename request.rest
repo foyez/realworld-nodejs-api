@@ -1,0 +1,50 @@
+GET http://localhost:5000/api/tags
+
+###
+
+POST http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+  "user": {
+    "username": "foyez",
+    "email": "foyez@email.com",
+    "password": "testpass"
+  }
+}
+
+###
+
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+  "user":{
+    "email": "foyez@email.com",
+    "password": "testpass"
+  }
+}
+
+###
+
+POST http://localhost:5000/api/token
+Content-Type: application/json
+
+{
+  "username": "foyez",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM4YjdkMzU5ZTMwMzk4MzVmMzBmZCIsInVzZXJuYW1lIjoiZm95ZXoiLCJpYXQiOjE1ODUwNjkzMjJ9.Hsb8AqCMAb4OrV6DR0Tg3MiCbXdPmt-QLUH6h6fcUDU"
+}
+
+###
+
+DELETE http://localhost:5000/api/token/reject
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM4YjdkMzU5ZTMwMzk4MzVmMzBmZCIsInVzZXJuYW1lIjoiZm95ZXoiLCJpYXQiOjE1ODUwNjkzMjJ9.Hsb8AqCMAb4OrV6DR0Tg3MiCbXdPmt-QLUH6h6fcUDU"
+}
+
+###
+
+GET http://localhost:5000/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNjM4YjdkMzU5ZTMwMzk4MzVmMzBmZCIsInVzZXJuYW1lIjoiZm95ZXoiLCJleHAiOjE1ODUwNTI0NDAsImlhdCI6MTU4NTA1MjQyMH0.6YK2EA37wxVbUcSI_7828_w4LwyxQPm2zVKgdhzu8lU
