@@ -1,31 +1,19 @@
 # Realworld API
 
-## OpenAPI (Swagger)
+> ### (Express + Mongoose) codebase containing real world examples (CRUD, auth, advanced patterns, etc)
 
-help link: https://blog.cloudboost.io/adding-swagger-to-existing-node-js-project-92a6624b855b
+# Code Overview
 
-## Docker
+## APIs
 
-```
-> docker build -t container-name .
-Example: docker build -t realworldcontainer .
+- [api documentation](https://foyez-realworld-api.herokuapp.com/api/v1/docs)
 
-> docker run -it container-name
-> docker run -it -d container-name // run in background
-> docker run -it -p 5000:5000 container-name // port porting
+## Dependencies
 
-> docker ps // watch running container
-> docker exec -it hash-id bash // go to a running container
-> docker stop hash-id(or container-id)
-
-> docker-compose build
-> docker-compose run realworld-api
-> docker-compose stop // shutdown db without delete all containers
-> docker-compose down // shutdown db & delete all containers
-> docker-compose up --build // run & build docker
-> docker-compose up --build --remove-orphans
-
-> docker-compose up // run docker
-> docker-compose up -d
-> docker-compose exec realworld-api bash
-```
+- [expressjs](https://github.com/expressjs/express) - The server for handling and routing HTTP requests
+- [express-jwt](https://github.com/auth0/express-jwt) - Middleware for validating JWTs for authentication
+- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) - For generating JWTs used by authentication
+- [mongoose](https://github.com/Automattic/mongoose) - For modeling and mapping MongoDB data to javascript
+- [mongoose-unique-validator](https://github.com/blakehaswell/mongoose-unique-validator) - For handling unique validation errors in Mongoose. Mongoose only handles validation at the document level, so a unique index across a collection will throw an exception at the driver level. The `mongoose-unique-validator` plugin helps us by formatting the error like a normal mongoose `ValidationError`.
+- [passport](https://github.com/jaredhanson/passport) - For handling user authentication
+- [slug](https://github.com/dodo/node-slug) - For encoding titles into a URL-friendly format

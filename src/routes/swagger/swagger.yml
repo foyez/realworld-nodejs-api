@@ -14,7 +14,7 @@ info:
 servers:
   - url: 'http://localhost:5000/api/v1'
     description: 'Dev server'
-  - url: 'https://foyez-realworld-api.herokuapp.com/api'
+  - url: 'https://foyez-realworld-api.herokuapp.com/api/v1'
     description: 'Production server'
 paths:
   /articles:
