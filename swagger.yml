@@ -41,35 +41,92 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  properties:
-                    slug:
-                      type: string
-                      example: 'this-article-is-about-dream'
-                    title:
-                      type: string
-                      example: 'This article is about dream'
-                    description:
-                      type: string
-                      example: 'This is description'
-                    body:
-                      type: string
-                      example: '# React Markdown in the browser * one Rendered by **react-markdown**.'
-                    tagList:
-                      type: array
-                      items:
-                        type: string
-                      example: ['dream', 'heaven']
-                    favorited:
-                      type: boolean
-                      example: false
-                    favoritesCount:
-                      type: integer
-                      example: 0
-                    createdAt:
-                      type: string
-                      example: '2020-03-07T17:39:32.198Z'
-                    updatedAt:
-                      type: string
-                      example: '2020-03-07T17:39:32.198Z'
+                $ref: '#/components/schemas/Articles'
+
+  /articles/{slug}:
+    get:
+      description: 'Obtain an article'
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: 'The slug of the article'
+          schema:
+            type: string
+            example: 'this-article-is-about-dream'
+      responses:
+        200:
+          description: 'pull article successfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Article'
+            application/xml:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Article'
+
+  /users:
+    post:
+      description: 'register an user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: 'foyez'
+                email:
+                  type: string
+                  example: foyez@email.com
+                password:
+                  type: string
+                  example: 'testpass'
+      responses:
+        200:
+          description: 'Successfully registered'
+
+components:
+  schemas:
+    Articles:
+      description: 'Array of article info'
+      type: array
+      items:
+        $ref: '#/components/schemas/Article'
+
+    Article:
+      description: 'Model containing article info'
+      properties:
+        slug:
+          type: string
+          example: 'this-article-is-about-dream'
+        title:
+          type: string
+          example: 'This article is about dream'
+        description:
+          type: string
+          example: 'This is description'
+        body:
+          type: string
+          example: '# React Markdown in the browser * one Rendered by **react-markdown**.'
+        tagList:
+          type: array
+          items:
+            type: string
+          example: ['dream', 'heaven']
+        favorited:
+          type: boolean
+          example: false
+        favoritesCount:
+          type: integer
+          example: 0
+        createdAt:
+          type: string
+          example: '2020-03-07T17:39:32.198Z'
+        updatedAt:
+          type: string
+          example: '2020-03-07T17:39:32.198Z'
