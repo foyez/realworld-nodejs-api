@@ -1,8 +1,8 @@
-const dbHandler = require('../../../../loaders/mongoose');
-const { User } = require('../../../../models/User');
+const dbHandler = require('../../../../src/loaders/mongoose');
+const { User } = require('../../../../src/models/User');
 
 const supertest = require('supertest');
-const app = require('../../../../app');
+const app = require('../../../../src/app');
 const request = supertest.agent(app);
 
 describe('/api/profiles', () => {

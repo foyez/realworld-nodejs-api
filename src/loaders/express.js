@@ -1,15 +1,8 @@
 const bodyParser = require('body-parser'),
   cors = require('cors'),
   errorhandler = require('errorhandler'),
-  session = require('express-session'),
   helmet = require('helmet'),
   compression = require('compression');
-
-const path = require('path');
-const swaggerUi = require('swagger-ui-express');
-const swaggerPath = path.resolve(__dirname, '../swagger.yml');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load(swaggerPath);
 
 module.exports = (app) => {
   app.use(cors());
@@ -20,13 +13,10 @@ module.exports = (app) => {
   app.use(helmet());
   app.use(compression());
 
-  app.use(session({ secret: 'conduit', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
-
   if (process.env.NODE_ENV === 'development') {
     app.use(errorhandler());
   }
 
-  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.use(require('../routes'));
 
   // catch 404 and forward to error handler

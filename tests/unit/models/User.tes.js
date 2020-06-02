@@ -1,7 +1,7 @@
 // const mongoose = require('mongoose');
-// const { User } = require('../../../models/User');
+// const { User } = require('../../../src/models/User');
 // const jwt = require('jsonwebtoken');
-// const secretOrKey = require('../../../config').secretOrKey;
+// const secretOrKey = require('../../../src/config').secretOrKey;
 
 // describe('UserSchema.generateJWT', () => {
 //   it('should return a valid JWT', () => {

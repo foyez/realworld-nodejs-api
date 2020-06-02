@@ -2,25 +2,43 @@ GET http://localhost:5000/api/tags
 
 ###
 
-POST http://localhost:5000/api/users
+POST http://localhost:5000/api/v1/users
 Content-Type: application/json
 
 {
   "user": {
-    "username": "foyez",
-    "email": "foyez@email.com",
+    "username": "chayon",
+    "email": "chayon@email.com",
     "password": "testpass"
   }
 }
 
 ###
 
-POST http://localhost:5000/api/users/login
+POST http://localhost:5000/api/v1/articles
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDY2YjhjNzVjNWY1NWM1NTllZjU5MCIsInVzZXJuYW1lIjoiY2hheW9uIiwiZXhwIjoxNTk2Mjk0OTU2LCJpYXQiOjE1OTExMTA5NTZ9.zHH7LNYIXtdmepuIznumAI5SKM_ovcW4cMIBuho_Jkk
+
+{
+  "article": {
+    "title": "This is a title",
+    "description": "This is a description",
+    "body": "This is a body",
+    "tagList": [
+      "dream",
+      "heaven"
+    ]
+  }
+}
+
+###
+
+POST http://localhost:5000/api/v1/users/login
 Content-Type: application/json
 
 {
   "user":{
-    "email": "foyez@email.com",
+    "email": "chayon@email.com",
     "password": "testpass"
   }
 }

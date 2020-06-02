@@ -42,6 +42,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Articles'
+    post:
+      description: Create an article
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                article:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: This is a title
+                    description:
+                      type: string
+                      example: This is a description
+                    body:
+                      type: string
+                      example: This is a body
+                    tagList:
+                      type: array
+                      items:
+                        type: string
+                      example: ['dream', 'heaven']
+      responses:
+        201:
+          description: The article created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  article:
+                    $ref: '#/components/schemas/Article'
 
   /articles/{slug}:
     get:
@@ -66,6 +104,9 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/Article'
+
+        404:
+          $ref: '#/components/responses/NotFoundError'
 
   /users:
     post:
@@ -124,9 +165,74 @@ components:
         favoritesCount:
           type: integer
           example: 0
+        author:
+          type: object
+          properties:
+            username:
+              type: string
+              example: 'foyez'
+            image:
+              type: string
+              example: 'https://raw.githubusercontent.com/foyezar/gatsby-blog/master/src/img/favicon.ico'
+            following:
+              type: boolean
+              example: false
         createdAt:
           type: string
           example: '2020-03-07T17:39:32.198Z'
         updatedAt:
           type: string
           example: '2020-03-07T17:39:32.198Z'
+
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Error message
+            error:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  example: 400
+              required:
+                - status
+          required:
+            - message
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    NotFoundError:
+      description: The specified resources was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequestError:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
