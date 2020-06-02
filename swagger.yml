@@ -1,0 +1,75 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'Real World NodeJS API'
+  description: 'An API that builds for learning purpose.'
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: 'Kazi Foyez Ahmed'
+    email: 'foyezar@gmail.com'
+    url: 'https://foyez.netlify.com'
+  license:
+    name: 'Real World Api 1.0'
+    url: 'http://www.foyez.netlify.com/licenses/LICENSE-1.0.html'
+servers:
+  - url: 'http://localhost:5000/api/v1'
+    description: 'Dev server'
+  - url: 'https://foyez-realworld-api.herokuapp.com/api'
+    description: 'Production server'
+paths:
+  /articles:
+    get:
+      description: 'Obtain all articles'
+      parameters:
+        - name: limit
+          in: query
+          description: 'The amount of articles returned'
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 20
+            example: 15
+        - name: tag
+          in: query
+          description: 'return articles by tag name'
+          schema:
+            type: string
+            example: 'dream'
+      responses:
+        200:
+          description: 'Successful pull of articles'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    slug:
+                      type: string
+                      example: 'this-article-is-about-dream'
+                    title:
+                      type: string
+                      example: 'This article is about dream'
+                    description:
+                      type: string
+                      example: 'This is description'
+                    body:
+                      type: string
+                      example: '# React Markdown in the browser * one Rendered by **react-markdown**.'
+                    tagList:
+                      type: array
+                      items:
+                        type: string
+                      example: ['dream', 'heaven']
+                    favorited:
+                      type: boolean
+                      example: false
+                    favoritesCount:
+                      type: integer
+                      example: 0
+                    createdAt:
+                      type: string
+                      example: '2020-03-07T17:39:32.198Z'
+                    updatedAt:
+                      type: string
+                      example: '2020-03-07T17:39:32.198Z'

@@ -1,5 +1,9 @@
 # Realworld API
 
+## OpenAPI (Swagger)
+
+help link: https://blog.cloudboost.io/adding-swagger-to-existing-node-js-project-92a6624b855b
+
 ## Docker
 
 ```

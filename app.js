@@ -24,7 +24,7 @@ const app = express();
 
 require('./loaders')(app);
 
-const server = app.listen(config.port, err => {
+const server = app.listen(config.port, (err) => {
   if (err) {
     Logger.error(err);
     process.exit(1);

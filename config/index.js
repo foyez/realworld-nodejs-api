@@ -33,7 +33,7 @@ module.exports = {
    * API configs
    */
   api: {
-    prefix: '/api',
+    prefix: '/api/v1',
   },
 
   get mongodbUri() {
@@ -43,11 +43,12 @@ module.exports = {
       return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
     }
 
-    return process.env.MONGO_DB_URI;
+    // return process.env.MONGO_DB_URI;
+    return `mongodb://${this.dbUsername}:${this.dbPassword}@${this.dbHostName}/${this.dbName}`;
   },
 
   checkEnvVariables: () => {
-    ENV_VARS.forEach(key => {
+    ENV_VARS.forEach((key) => {
       if (!process.env[key]) {
         throw new Error('ERROR: Missing the environment variable ' + key);
       } else {
