@@ -1,6 +1,6 @@
 # Realworld API
 
-> ### (Express + Mongoose) codebase containing real world examples (CRUD, auth, advanced patterns, etc)
+> ### (Express + MongoDB) codebase containing real world examples (CRUD, auth, advanced patterns, etc)
 
 # Code Overview
 
